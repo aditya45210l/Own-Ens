@@ -1,8 +1,10 @@
 import Dashboard from "@/components/dashboard"
+import NotUserName from "@/components/NotUserName"
 
 const page = () => {
+
   return (
-    <Dashboard/>
+        <NotUserName/>
   )
 }
 export default page

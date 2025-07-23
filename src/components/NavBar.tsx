@@ -3,9 +3,9 @@ import Link from "next/link";
 
 const NavBar = () => {
   return (
-    <div className="flex px-16 py-4 items-center justify-between border-b-2 border-b-gray-100">
+    <div className="flex px-8 py-4 items-center justify-between border-b-2 border-b-gray-100">
       {/* Left NavBar which contain Logo */}
-      <div className="flex gap-1 items-center">
+      <Link href={'/'} className="flex gap-1 items-center">
         <div className="size-4">
           <svg
             viewBox="0 0 48 48"
@@ -18,14 +18,13 @@ const NavBar = () => {
             ></path>
           </svg>
         </div>
-        <h1 className="font-bold leading-0">Simple ENS</h1>
-      </div>
-      <div className="flex flex-row items-center gap-6">
-        <Link href={"/Home"}>Home</Link>
-        <Link href={"/Search"}>Search</Link>
-        <Link href={"/MyName"}>MyNames</Link>
-        <span>
-          <ConnectButton />
+        <h1 className="font-bold leading-0 max-sm:hidden">Simple ENS</h1>
+      </Link>
+      <div className="flex flex-row items-center gap-6 max-sm:hidden">
+        <Link href={"/search"}>Search</Link>
+        <Link href={"/my-name?name=aditya"}>MyNames</Link>
+        <span className="min-w-[153.6px] min-h-[40px]"> 
+          <ConnectButton accountStatus={"full"} chainStatus={"none"} showBalance={false}/>
         </span>
       </div>
     </div>
