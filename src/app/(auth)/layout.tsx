@@ -12,17 +12,19 @@ import { useAccount, useConfig } from "wagmi";
 import { usePathname, useRouter } from "next/navigation";
 import NewNav from "@/components/NewNav";
 
-export const ContextProvider = createContext<{ name: string | undefined }>({
+// ✅ Rename the context (DO NOT export it as 'ContextProvider')
+export const NameContext = createContext<{ name: string | undefined }>({
   name: undefined,
 });
 
 const AuthLayout = ({ children }: { children: ReactNode }) => {
-  const config = useConfig(); // ✅ This gives you the actual config object
+  const config = useConfig();
   const router = useRouter();
 
   const { isConnected, address } = useAccount();
   const [name, setName] = useState<string | undefined>("");
   const pathName = usePathname();
+
   const findName = useCallback(async () => {
     try {
       const result = await readContract(config, {
@@ -38,7 +40,7 @@ const AuthLayout = ({ children }: { children: ReactNode }) => {
         return { status: true, data: String(result) };
       } else {
         setName(undefined);
-        return { status: false, data: "" }; // No name
+        return { status: false, data: "" };
       }
     } catch (err) {
       console.error("Error reading contract:", err);
@@ -59,7 +61,6 @@ const AuthLayout = ({ children }: { children: ReactNode }) => {
       const { status, data } = await findName();
 
       if (!status) {
-        // router.push(`/my-name?address=${address}&name=${data}`);
         router.push("/search");
       } else {
         setName(data);
@@ -69,17 +70,14 @@ const AuthLayout = ({ children }: { children: ReactNode }) => {
     checkName();
   }, [isConnected, address, pathName, findName, router]);
 
-  useEffect(() => {
-    console.log("effect; ", name);
-  }, [name]);
-
   return (
     <>
       <NewNav type="auth" name={name} address={address} />
-      <ContextProvider.Provider value={{ name: name ? name : undefined }}>
+      <NameContext.Provider value={{ name }}>
         {children}
-      </ContextProvider.Provider>
+      </NameContext.Provider>
     </>
   );
 };
+
 export default AuthLayout;
