@@ -1,67 +1,21 @@
 "use client";
-import { abi, contractAddr } from "@/constant/constant";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Head from "next/head";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { readContract } from "wagmi/actions";
+import { useEffect } from "react";
 import { useAccount, useConfig } from "wagmi";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import NewNav from "@/components/NewNav";
+import { CustomConnectButton } from "@/components/CustomButton";
+import { Button } from "@/components/ui/button";
 
 export default function HomePage() {
-  const [loading, setLoading] = useState(false);
-  const [name, setName] = useState<string | null>("");
   const config = useConfig(); // ✅ This gives you the actual config object
   const { isConnected, address } = useAccount();
-  const findName = async () => {
-    try {
-      setLoading(true);
-
-      const result = await readContract(config, {
-        abi,
-        address: contractAddr,
-        functionName: "getName",
-        args: [address],
-      });
-
-      if (result && result !== "") {
-        console.log("name was found!");
-        setName(String(result));
-        return { status: true, data: String(result) };
-      } else {
-        setName(null);
-        return { status: false, data: "" }; // No name
-      }
-    } catch (err) {
-      console.error("Error reading contract:", err);
-      setName(null);
-      return { status: false, data: "" };
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // useEffect(() => {
-
-  //   console.log(isConnected)
-  //   if (isConnected) {
-  //     const {status,data} = findName();
-  //     console.log("name: ",name);
-  //     if (status) {
-  //       redirect(`/my-name?name=${data}`);
-  //     } else {
-  //       redirect("/search");
-  //     }
-  //   }
-  // }, [config, isConnected, address]);
-
-  const router = useRouter();
 
   useEffect(() => {
     if (!isConnected) return;
 
-redirect('/search');
+    redirect("/search");
   }, [config, isConnected, address]);
 
   return (
@@ -121,9 +75,13 @@ redirect('/search');
                         store your avatar, profile data, and more.
                       </h2>
                     </div>
-                    <button className="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-10 px-4 h-12 px-5 bg-[#c5daeb] text-[#121516] text-sm font-bold leading-normal tracking-[0.015em] text-base font-bold leading-normal tracking-[0.015em]">
-                      <span className="truncate">Get Started</span>
-                    </button>
+                    {isConnected ? (
+                      <Button onClick={() => redirect("/search")}>
+                        Launch App
+                      </Button>
+                    ) : (
+                      <CustomConnectButton />
+                    )}
                   </div>
                 </div>
               </div>
@@ -221,7 +179,13 @@ redirect('/search');
                   </div>
                   <div className="flex flex-1 justify-center">
                     <div className="flex justify-center">
-                      <ConnectButton />
+                      {isConnected ? (
+                        <Button onClick={() => redirect("/search")}>
+                          Launch App
+                        </Button>
+                      ) : (
+                        <CustomConnectButton />
+                      )}
                     </div>
                   </div>
                 </div>
