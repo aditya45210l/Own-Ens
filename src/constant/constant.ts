@@ -157,4 +157,5 @@ export const abi = [
 ]
 
 // export const contractAddr = "0x821cEC49e17fdcBedD45CE07D0479DFf134a0eCB"
-export const contractAddr = "0x851356ae760d987E095750cCeb3bC6014560891C"
+export const contractAddr = "0xAB6D4f8B409E6bDe3967838994480272d0b1e902"
+export const projectId = process.env.NEXT_PUBLIC_PROJECT_ID;
