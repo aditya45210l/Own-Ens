@@ -4,7 +4,7 @@ import { anvil, sepolia } from "viem/chains";
 
 const config = getDefaultConfig({
   appName: "Simle ENS",
-  projectId: process.env.projectId || "",
+  projectId: process.env.projectId!,
   chains: [sepolia, anvil],
   ssr: false,
 });
