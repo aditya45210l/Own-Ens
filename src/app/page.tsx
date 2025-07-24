@@ -14,10 +14,6 @@ export default function HomePage() {
   const [name, setName] = useState<string | null>("");
   const config = useConfig(); // ✅ This gives you the actual config object
   const { isConnected, address } = useAccount();
-  useEffect(() => {
-    if (isConnected) {
-    }
-  }, [isConnected]);
   const findName = async () => {
     try {
       setLoading(true);

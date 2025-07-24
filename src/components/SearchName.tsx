@@ -14,7 +14,6 @@ import { redirect, RedirectType } from "next/navigation";
 import { Button } from "./ui/button";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { AlertCircleIcon } from "lucide-react";
-import MyName from "./MyName";
 
 const SearchName = () => {
   // console.log("i am in search!;")

@@ -7,7 +7,7 @@ import { ReactNode, useState } from "react";
 import config from "../rainbowKitProvider";
 const Provider = ({ children }: { children: ReactNode }) => {
   const [client] = useState(() => new QueryClient());
-
+;
   return (
     <WagmiProvider config={config}>
       <QueryClientProvider client={client}>
