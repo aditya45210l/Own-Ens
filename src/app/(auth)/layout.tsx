@@ -4,7 +4,6 @@ import {
   createContext,
   ReactNode,
   useCallback,
-  useContext,
   useEffect,
   useState,
 } from "react";
@@ -13,7 +12,7 @@ import { useAccount, useConfig } from "wagmi";
 import { usePathname, useRouter } from "next/navigation";
 import NewNav from "@/components/NewNav";
 
-const ContextProvider = createContext<{ name: string | undefined }>({
+export const ContextProvider = createContext<{ name: string | undefined }>({
   name: undefined,
 });
 
@@ -84,9 +83,3 @@ const AuthLayout = ({ children }: { children: ReactNode }) => {
   );
 };
 export default AuthLayout;
-
-export const ContextValue = () => {
-  const value = useContext(ContextProvider);
-  console.log("value: ", value);
-  return { ...value };
-};

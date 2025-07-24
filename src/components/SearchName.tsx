@@ -1,6 +1,6 @@
 "use client";
 import { abi, contractAddr } from "@/constant/constant";
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
 
 import {
@@ -14,12 +14,13 @@ import { redirect, RedirectType } from "next/navigation";
 import { Button } from "./ui/button";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
 import { AlertCircleIcon, Loader2Icon } from "lucide-react";
-import { ContextValue } from "@/app/(auth)/layout";
+import { ContextProvider } from "@/app/(auth)/layout";
 
 const SearchName = () => {
   // console.log("i am in search!;")
   const [name, setName] = useState("");
-  const { name: checkName } = ContextValue();
+  const {name:checkName} = useContext(ContextProvider);
+
   console.log("checkname: ", checkName);
   const [startBuy, setStartBuy] = useState(false);
   const [isName, setIsName] = useState<"available" | "notAvailable" | null>(
