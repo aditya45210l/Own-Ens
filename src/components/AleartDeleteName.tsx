@@ -15,10 +15,12 @@ import { useEffect, useState } from "react";
 import { useWriteContract } from "wagmi";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 export function AleartDeleteName({ name }: { name?: string }) {
   const [state, setState] = useState(false);
   const [errors, setErrors] = useState("");
+  const router = useRouter();
   const {
     writeContract,
     data: hash,
@@ -49,12 +51,13 @@ export function AleartDeleteName({ name }: { name?: string }) {
   }, [error]);
   useEffect(() => {
     if (isSuccess && hash) {
+              router.push(`/search`)
       setState(false);
       toast("Deleted sucessfully", {
         description: hash,
       });
     }
-  }, [isSuccess, hash]);
+  }, [isSuccess, hash,router]);
   return (
     <>
       <AlertDialog open={state}>

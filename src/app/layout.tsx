@@ -5,6 +5,7 @@ import NavBar from "@/components/NavBar";
 import "@rainbow-me/rainbowkit/styles.css";
 import Provider from "@/provider";
 import { Toaster } from "sonner";
+import NewNav from "@/components/NewNav";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,11 +32,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased `}
       >
-        <div className="w-full mx-auto container">
+        <div className="w-full mx-auto container ">
           <Provider>
-            {" "}
-            <NavBar />
-            {children}
+            <div className="sm:px-12">
+              {children}
+            </div>
             <Toaster />
           </Provider>
         </div>

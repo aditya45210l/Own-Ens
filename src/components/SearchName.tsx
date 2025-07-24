@@ -1,7 +1,7 @@
 "use client";
 import { abi, contractAddr } from "@/constant/constant";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 
 import {
   useConfig,
@@ -13,11 +13,14 @@ import { Input } from "./ui/input";
 import { redirect, RedirectType } from "next/navigation";
 import { Button } from "./ui/button";
 import { Alert, AlertDescription, AlertTitle } from "./ui/alert";
-import { AlertCircleIcon } from "lucide-react";
+import { AlertCircleIcon, Loader2Icon } from "lucide-react";
+import { ContextValue } from "@/app/(auth)/layout";
 
 const SearchName = () => {
   // console.log("i am in search!;")
   const [name, setName] = useState("");
+  const { name: checkName } = ContextValue();
+  console.log("checkname: ", checkName);
   const [startBuy, setStartBuy] = useState(false);
   const [isName, setIsName] = useState<"available" | "notAvailable" | null>(
     null
@@ -30,7 +33,7 @@ const SearchName = () => {
     isPending,
     isSuccess,
   } = useWriteContract();
-  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+  const { isSuccess: isConfirmed, data: confirmedHash } =
     useWaitForTransactionReceipt({
       hash,
     });
@@ -95,7 +98,9 @@ const SearchName = () => {
             ),
         },
       });
-        redirect('/my-name');
+      setTimeout(() => {
+        redirect("/my-name");
+      }, 1000);
     }
   }, [isConfirmed, hash]);
 
@@ -105,7 +110,7 @@ const SearchName = () => {
     }, 300);
 
     return () => clearTimeout(delay);
-  }, [name]);
+  }, [name, checkAvailibility]);
 
   return (
     <>
@@ -149,13 +154,23 @@ const SearchName = () => {
           </label>
         </div> */}
         <Button
-          size={"lg"}
+          size="lg"
           className="px-8 py-1.5 cursor-pointer"
           type="submit"
-          disabled={isName !== "available" ? true : false}
+          disabled={
+            checkName !== undefined ||
+            (checkName === undefined && isName !== "available")
+          }
           onClick={handleNameBuy}
         >
-          <p className="">{isPending ? "wating..." : "Register"}</p>
+          {checkName === undefined ? (
+            <p className="flex justify-center gap-1 items-center">
+              {isPending && <Loader2Icon className="animate-spin" />}
+              {isPending ? "wating..." : "Register"}{" "}
+            </p>
+          ) : (
+            <p>Claimed</p>
+          )}
         </Button>
       </div>
 
@@ -174,7 +189,7 @@ const SearchName = () => {
       {isSuccess && (
         <Alert variant="default" className="font-bold max-w-72">
           <AlertCircleIcon />
-          <AlertTitle className="text-green-600">Success!</AlertTitle>
+          <AlertTitle className="text-yellow-600">Pending...</AlertTitle>
           <AlertDescription className="whitespace-normal break-all break-words max-w-72 flex">
             tnxs:
             <a
@@ -185,6 +200,25 @@ const SearchName = () => {
             >
               {" "}
               {hash.slice(0, 6)}...{hash.slice(-4)}
+            </a>
+          </AlertDescription>
+        </Alert>
+      )}
+      {isConfirmed && (
+        <Alert variant="default" className="font-bold max-w-72">
+          <AlertCircleIcon />
+          <AlertTitle className="text-green-600">Confirmed!</AlertTitle>
+          <AlertDescription className="whitespace-normal break-all break-words max-w-72 flex">
+            tnxs:
+            <a
+              href={`https://etherscan.io/tx/${String(confirmedHash)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline text-blue-600 break-all"
+            >
+              {" "}
+              {String(confirmedHash.transactionHash).slice(0, 6)}...
+              {String(confirmedHash.transactionHash).slice(-4)}
             </a>
           </AlertDescription>
         </Alert>
