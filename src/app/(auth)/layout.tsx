@@ -1,7 +1,6 @@
 "use client";
 import { abi, contractAddr } from "@/constant/constant";
 import {
-  createContext,
   ReactNode,
   useCallback,
   useEffect,
@@ -11,11 +10,10 @@ import { readContract } from "wagmi/actions";
 import { useAccount, useConfig } from "wagmi";
 import { usePathname, useRouter } from "next/navigation";
 import NewNav from "@/components/NewNav";
+import { NameContext } from "@/provider";
 
 // ✅ Rename the context (DO NOT export it as 'ContextProvider')
-export const NameContext = createContext<{ name: string | undefined }>({
-  name: undefined,
-});
+
 
 const AuthLayout = ({ children }: { children: ReactNode }) => {
   const config = useConfig();
