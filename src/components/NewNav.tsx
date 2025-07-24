@@ -16,7 +16,7 @@ const NewNav = ({
   return (
     <header className="flex h-16 w-full items-center border-b border-gray-200 dark:border-gray-800">
       <div className="mx-auto max-w-7xl flex w-full items-center px-4 md:px-6">
-        <Link href="#" className="mr-6 flex items-center" prefetch={false}>
+        <Link href="/search" className="mr-6 flex items-center" prefetch={false}>
           <MountainIcon className="h-6 w-6" />
           <span className="sr-only">Acme Inc</span>
         </Link>
@@ -82,14 +82,14 @@ const NewNav = ({
               <SheetContent side="top">
                 <div className="grid gap-6 p-6">
                   <Link
-                    href="#"
+                    href="/search"
                     className="text-sm font-medium hover:underline underline-offset-4"
                     prefetch={false}
                   >
                     Search
                   </Link>
                   <Link
-                    href="#"
+                    href={`/my-name?address=${address}&name=${name}`}
                     className="text-sm font-medium hover:underline underline-offset-4"
                     prefetch={false}
                   >
